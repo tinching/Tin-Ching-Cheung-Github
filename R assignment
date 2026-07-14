@@ -1,0 +1,80 @@
+---
+title: "2908 - Report"
+author: "TC"
+date: "17/02/2026"
+output: pdf_document
+classoption: "a4paper"
+---
+
+```{r setup}
+#| echo: false
+library(ggplot2)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  out.width = "60%",
+  fig.align = "center",
+  fig.asp = 0.7
+)
+```
+
+# Question 1
+
+a. Write answers to part a here.
+
+The original scatterplot in Figure 1 is an ineffective visualization primarily due to overplotting and an inappropriate geometry choice. Because the sepal width measurements are recorded to only one decimal place, many data points overlap perfectly, masking the true density of the observations. Then, using a scatterplot to compare a categorical variable like 'Species' against a continuous one makes it difficult to discern the central tendency or spread of each group.
+
+b. Write answers to part b here.
+
+To address these issues, I have replaced the scatterplot with a boxplot. This geom is far superior for comparing groups because it clearly identifies the median, the interquartile range (the "middle 50%"), and any outliers. I have also ensured the code is hidden in this PDF and the axis labels are properly formatted for a professional report.
+```{r q1b}
+ggplot(data = iris, aes(x = Species, y = Sepal.Width)) +
+  geom_boxplot(fill = "lightblue", color = "black") +
+  labs(
+    title = "Figure 1: Comparison of Sepal Width Across Iris Species",
+    x = "Iris Species",
+    y = "Sepal Width (cm)"
+  ) +
+  theme_minimal()
+```
+
+# Question 2
+
+a. Write answers to part a here.
+
+The boxplot in Figure 2 is an oversimplification of the Petal.Length variable because it fails to show the modality of the data. A boxplot assumes the data is mostly centered around one middle point, but as shown in the histogram below, the distribution is actually bimodal. There is a clear "gap" between the 2cm and 3cm marks where almost no data exists. The boxplot "bridges" this gap, misleading the viewer into thinking the data is continuous and unimodal.
+```{r q2a}
+ggplot(iris, aes(x = Petal.Length)) +
+  geom_histogram(binwidth = 0.4, fill = "gray70", color = "black") +
+  labs(
+    title = "Figure 2a: Histogram of Petal Length",
+    x = "Petal Length (cm)",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+
+b. Write answers to part b here.
+
+The primary reason for this non-symmetric, bimodal distribution is the Species variable. The iris dataset is not a single uniform group; it contains three distinct species with different physical characteristics. When we separate the data using a density plot, we see that Setosa forms the first peak on the left, while Versicolor and Virginica overlap to form the second peak. The distribution is not "one-size-fits-all" because it represents a mixture of these different biological populations.
+```{r q2b}
+ggplot(iris, aes(x = Petal.Length, fill= Species)) +
+  geom_density(alpha = 0.5) +
+  labs(
+    title = "Figure 2b: Petal Length Density by Species",
+    x = "Petal Length (cm)",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
+
+# Question 3
+
+In the iris dataset, Petal.Length and Petal.Width exhibit a very strong positive linear correlation. Below is a scatterplot of these two variables with an overlaid line of best fit to illustrate this relationship.
+```{r q3}
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  labs(x = "Petal Length (cm)", y = "Petal Width (cm)") +
+  theme_minimal()
+```
+
